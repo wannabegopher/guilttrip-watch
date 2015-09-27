@@ -24,17 +24,17 @@ app.get('/', function home (req, res, next) {
   });
 });
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 const server = require('http').Server(app)
 const ioSocket = require('socket.io')(server)
+
+server.listen(port);
 
 new InstagramAirportListener({
   app: app,
   ioSocket: ioSocket,
   callbackURL: config[environment].callbackURL
 })
-
-server.listen(port);
 
 console.info(`Server running on port ${port}`)
