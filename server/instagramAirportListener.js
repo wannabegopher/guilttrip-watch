@@ -1,10 +1,12 @@
 
 import url from 'url'
+import request from 'request'
 import bodyParser from 'body-parser'
 import instagramNode from 'instagram-node'
-
+import P from 'bluebird'
 import airports from './lib/geocodedAirports'
 import debug from './debug'
+
 
 class InstagramAirportListener {
 
@@ -13,16 +15,8 @@ class InstagramAirportListener {
     this.ioSocket = config.ioSocket
     this.callbackURL = config.callbackURL
 
-    this.initInstagram()
-    this.listenToAirports()
-  }
-
-  listenToAirports() {
-    airports.slice(0,5).forEach(airport => {
-      debug(airport)
-      this.subscribeToAirportByCoordinates(airport)
-    })
-    // this.subscribeToAirportByCoordinates(airport)
+    this.setupInstagramRoutes()
+    this.initInstagram().then(this.listenToAirports())
   }
 
 // subscribeToAirportByLocationID(airport) {
@@ -38,20 +32,31 @@ class InstagramAirportListener {
 //   })
 // }
 
+  listenToAirports() {
+    airports.forEach(airport => {
+      this.subscribeToAirportByCoordinates(airport)
+    })
+  }
 
   subscribeToAirportByCoordinates(airport) {
-    console.info(airport.latitude)
-    console.info(airport.longitude)
+
+    debug("Using callback URL", this.callbackURL)
+
     this.ig.add_geography_subscription(
       airport.latitude,
       airport.longitude,
-      900,
+      4900,
       this.callbackURL,
-      (err, result, remaining, limit)=> {
+
+      (err, result, remaining, limit) => {
         if (err) {
           debug(err)
         }
-        debug('Result', result, 'Remaining', remaining, 'Limit',limit)
+        debug('Reply from subscribe', 'Result', result, 'Remaining', remaining, 'Limit',limit)
+
+        // this.ig.subscriptions((err, result, remaining, limit)=> {
+        //   debug('Confirmed subscription:','Result', result, 'Remaining', remaining, 'Limit',limit)
+        // })
 
     })
   }
@@ -61,17 +66,23 @@ class InstagramAirportListener {
     const instagramSecret = process.env.INSTAGRAM_SECRET
 
     if (!instagramID || !instagramSecret) {
-      throw("Instagram client IDs not in environment. Sry.")
+      throw('Instagram client IDs not in environment. Sry.')
     }
 
     this.ig = instagramNode.instagram()
     this.ig.use({client_id: instagramID, client_secret: instagramSecret})
-    this.ig.del_subscription({ all: true }, (err, subscriptions, remaining, limit) => {
-      if (err) {
-        throw(err)
-      }
+
+    return new P((resolve, reject)=> {
+      this.ig.del_subscription({ all: true }, (err, subscriptions, remaining, limit) => {
+        debug('Subscriptions deleted')
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
     })
-    this.setupInstagramRoutes()
+
   }
 
 
@@ -79,7 +90,6 @@ class InstagramAirportListener {
     const jsonParser = bodyParser.json()
 
     this.app.get('/instagram', (req, res, next) => {
-
       const parsedRequest = url.parse(req.url, true);
       if (parsedRequest['query']['hub.mode'] === 'subscribe' && (parsedRequest['query']['hub.challenge'] != null)) {
         const body = parsedRequest['query']['hub.challenge']
@@ -90,6 +100,7 @@ class InstagramAirportListener {
         res.writeHead(200, headers)
         res.write(body)
         res.write(parsedRequest['query']['hub.challenge'])
+        debug('Successfully replied to instagram challenge')
       } else {
         res.writeHead(400)
       }
@@ -97,7 +108,7 @@ class InstagramAirportListener {
     })
 
     this.app.post('/instagram', jsonParser, (req, res, next) => {
-      debug(req.body)
+      debug(req.body, req.body.data)
       return res.end()
     })
 

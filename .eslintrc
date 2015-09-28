@@ -1,0 +1,16 @@
+{
+    "settings": {
+        "ecmascript": 6,
+             "ecmaFeatures": {
+              "modules": true
+        }
+
+    },
+    "rules": {
+        "strict": false,
+        "quotes": [2, "single"]
+    },
+    "globals": {
+        "Symbol": true
+    }
+}
