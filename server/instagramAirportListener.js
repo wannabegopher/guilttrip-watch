@@ -19,23 +19,25 @@ class InstagramAirportListener {
     this.initInstagram().then(this.listenToAirports())
   }
 
-// subscribeToAirportByLocationID(airport) {
-//   this.ig.add_location_subscription(
-//     3001119,
-//     this.callbackURL,
-//     (err, result, remaining, limit)=> {
-//       if (err) {
-//         debug(err)
-//       }
-//       debug('Result', result, 'Remaining', remaining, 'Limit',limit)
-//
-//   })
-// }
+subscribeToAirportByLocationID(airport) {
+  this.ig.add_location_subscription(
+    3001373,
+    this.callbackURL,
+    (err, result, remaining, limit)=> {
+      if (err) {
+        debug(err)
+      }
+      debug('Result', result, 'Remaining', remaining, 'Limit',limit)
+
+  })
+}
 
   listenToAirports() {
-    airports.forEach(airport => {
-      this.subscribeToAirportByCoordinates(airport)
-    })
+    this.subscribeToAirportByCoordinates(airports[0])
+    this.subscribeToAirportByLocationID()
+    // airports.forEach(airport => {
+    //   this.subscribeToAirportByCoordinates(airport)
+    // })
   }
 
   subscribeToAirportByCoordinates(airport) {
@@ -43,8 +45,9 @@ class InstagramAirportListener {
     debug("Using callback URL", this.callbackURL)
 
     this.ig.add_geography_subscription(
-      airport.latitude,
-      airport.longitude,
+      40.758876, -73.985136,
+      // airport.latitude,
+      // airport.longitude,
       4900,
       this.callbackURL,
 
@@ -73,6 +76,9 @@ class InstagramAirportListener {
     this.ig.use({client_id: instagramID, client_secret: instagramSecret})
 
     return new P((resolve, reject)=> {
+      resolve()
+      return
+
       this.ig.del_subscription({ all: true }, (err, subscriptions, remaining, limit) => {
         debug('Subscriptions deleted')
         if (err) {
