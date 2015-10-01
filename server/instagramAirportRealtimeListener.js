@@ -7,37 +7,24 @@ import P from 'bluebird'
 import airports from './lib/geocodedAirports'
 import debug from './debug'
 
+// object_id <-- this
+// https://api.instagram.com/v1/geographies/12995617/media/recent?client_id=67ea0a8b81584a05aeb62239ba92f7a1
 
 class InstagramAirportListener {
 
   constructor(config) {
     this.app = config.app
     this.ioSocket = config.ioSocket
-    this.callbackURL = config.callbackURL
+    this.callbackURL = 'http://93fb796a.ngrok.io/instagram'
 
     this.setupInstagramRoutes()
     this.initInstagram().then(this.listenToAirports())
   }
 
-subscribeToAirportByLocationID(airport) {
-  this.ig.add_location_subscription(
-    3001373,
-    this.callbackURL,
-    (err, result, remaining, limit)=> {
-      if (err) {
-        debug(err)
-      }
-      debug('Result', result, 'Remaining', remaining, 'Limit',limit)
-
-  })
-}
-
   listenToAirports() {
-    this.subscribeToAirportByCoordinates(airports[0])
-    this.subscribeToAirportByLocationID()
-    // airports.forEach(airport => {
-    //   this.subscribeToAirportByCoordinates(airport)
-    // })
+    airports.slice(0,5).forEach(airport => {
+      this.subscribeToAirportByCoordinates(airport)
+    })
   }
 
   subscribeToAirportByCoordinates(airport) {
@@ -45,21 +32,21 @@ subscribeToAirportByLocationID(airport) {
     debug("Using callback URL", this.callbackURL)
 
     this.ig.add_geography_subscription(
-      40.758876, -73.985136,
-      // airport.latitude,
-      // airport.longitude,
-      4900,
+      +airport.latitude,
+      +airport.longitude,
+      5000,
       this.callbackURL,
 
       (err, result, remaining, limit) => {
         if (err) {
           debug(err)
         }
+
         debug('Reply from subscribe', 'Result', result, 'Remaining', remaining, 'Limit',limit)
 
-        // this.ig.subscriptions((err, result, remaining, limit)=> {
-        //   debug('Confirmed subscription:','Result', result, 'Remaining', remaining, 'Limit',limit)
-        // })
+        this.ig.subscriptions((err, result, remaining, limit)=> {
+          debug('Confirmed subscriptions:','Result', result, 'Remaining', remaining, 'Limit',limit)
+        })
 
     })
   }
@@ -69,16 +56,13 @@ subscribeToAirportByLocationID(airport) {
     const instagramSecret = process.env.INSTAGRAM_SECRET
 
     if (!instagramID || !instagramSecret) {
-      throw('Instagram client IDs not in environment. Sry.')
+      throw('Instagram client IDs not in environment. Rly sry.')
     }
 
     this.ig = instagramNode.instagram()
     this.ig.use({client_id: instagramID, client_secret: instagramSecret})
 
     return new P((resolve, reject)=> {
-      resolve()
-      return
-
       this.ig.del_subscription({ all: true }, (err, subscriptions, remaining, limit) => {
         debug('Subscriptions deleted')
         if (err) {
@@ -88,9 +72,7 @@ subscribeToAirportByLocationID(airport) {
         }
       })
     })
-
   }
-
 
   setupInstagramRoutes() {
     const jsonParser = bodyParser.json()

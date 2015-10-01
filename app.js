@@ -5,8 +5,9 @@ import React from 'react/addons'
 import App from './components/app'
 
 import config from './config'
-import InstagramAirportListener from './server/instagramAirportListener'
+import InstagramAirportListener from './server/instagramAirportPollingListener'
 
+import debug from './server/debug'
 
 const environment = process.env.NODE_ENV || 'development'
 const port = config[environment].port
@@ -29,13 +30,27 @@ app.use(express.static('public'))
 const server = require('http').Server(app)
 const ioSocket = require('socket.io')(server)
 
+ioSocket.on('connection', function (socket) {
+  debug('Client connected')
+})
+
+ioSocket.on('connection', function (socket) {
+  debug('Client connected')
+})
+
 new InstagramAirportListener({
   app: app,
   ioSocket: ioSocket,
-  callbackURL: config[environment].callbackURL
 })
 
-server.listen(port);
+function emitRandom() {
+  ioSocket.emit('ping', {ping: Math.random()})
+  setTimeout(emitRandom, 1000)
+  debug('ping')
+}
 
+emitRandom()
+
+server.listen(port);
 
 console.info(`Server running on port ${port}`)

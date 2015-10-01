@@ -1,4 +1,5 @@
 import React from 'react'
+import io from 'socket.io-client'
 
 export default React.createClass({
 
@@ -10,6 +11,16 @@ export default React.createClass({
 
   componentDidMount() {
     console.info("On the client")
+
+    const socket = io()
+
+    socket.on('connect', () => {
+      console.info('Client connected')
+    })
+
+    socket.on('ping', data => {
+      console.info('Got data:', data)
+    })
   },
 
   render() {
