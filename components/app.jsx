@@ -6,13 +6,11 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      n: 0
+      travellers: []
     }
   },
 
   componentDidMount() {
-
-
     const socket = io()
     socket.on('connect', () => {
       console.info('Client connected')
@@ -27,13 +25,8 @@ export default React.createClass({
     return (
     <div>
       <Map/>
-      <h1>clicked {this.state.n} times</h1>
-      <button onClick={this.handleClick}>click me!</button>
     </div>
     )
   },
 
-  handleClick() {
-    this.setState({ n: this.state.n + 1 })
-  }
 })

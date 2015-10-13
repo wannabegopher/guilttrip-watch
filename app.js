@@ -35,10 +35,6 @@ ioSocket.on('connection', function (socket) {
   debug('Client connected')
 })
 
-ioSocket.on('connection', function (socket) {
-  debug('Client connected')
-})
-
 new InstagramAirportListener({
   app: app,
   ioSocket: ioSocket,

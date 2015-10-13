@@ -22,7 +22,7 @@ class InstagramAirportPollingListener {
   }
 
   pollAirportsAndBackfillTravellers() {
-    let airportQueryPromises = this.airports.map(airport => {
+    let airportQueryPromises = this.airports.slice(0,1).map(airport => {
       return this.pollAirPort(airport)
     })
 
