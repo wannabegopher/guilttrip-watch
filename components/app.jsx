@@ -1,5 +1,6 @@
 import React from 'react'
 import io from 'socket.io-client'
+import Map from './map.jsx'
 
 export default React.createClass({
 
@@ -10,10 +11,9 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    console.info("On the client")
+
 
     const socket = io()
-
     socket.on('connect', () => {
       console.info('Client connected')
     })
@@ -26,6 +26,7 @@ export default React.createClass({
   render() {
     return (
     <div>
+      <Map/>
       <h1>clicked {this.state.n} times</h1>
       <button onClick={this.handleClick}>click me!</button>
     </div>

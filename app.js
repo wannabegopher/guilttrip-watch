@@ -4,8 +4,9 @@ import hbs from 'express-handlebars'
 import React from 'react/addons'
 import App from './components/app'
 
+
 import config from './config'
-import InstagramAirportListener from './server/instagramAirportPollingListener'
+import InstagramAirportListener from './server/InstagramAirportPollingListener'
 
 import debug from './server/debug'
 
@@ -46,7 +47,6 @@ new InstagramAirportListener({
 function emitRandom() {
   ioSocket.emit('ping', {ping: Math.random()})
   setTimeout(emitRandom, 1000)
-  debug('ping')
 }
 
 emitRandom()
