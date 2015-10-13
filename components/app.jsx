@@ -16,7 +16,7 @@ export default React.createClass({
       console.info('Client connected')
     })
 
-    socket.on('ping', data => {
+    socket.on('initialTravellerSet', data => {
       console.info('Got data:', data)
     })
   },

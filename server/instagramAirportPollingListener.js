@@ -1,22 +1,27 @@
 
 import url from 'url'
 import P from 'bluebird'
+
+import TravellerKeeper from './TravellerKeeper'
+import SocketPool from './SocketPool'
+
 import geocodedAirports from './lib/geocodedAirports'
 import instagram from './lib/instagram'
-import TravellerKeeper from './TravellerKeeper'
+
 import debug from './debug'
 
 class InstagramAirportPollingListener {
 
   constructor(config) {
     this.app = config.app
-    this.ioSocket = config.ioSocket
+    this.ig = instagram()
+
     this.airportPollingFrequency = 1000*60*2
 
     this.airports = geocodedAirports
-    this.travellerKeeper = new TravellerKeeper()
 
-    this.ig = instagram()
+    this.travellerKeeper = new TravellerKeeper()
+    this.socketPool = new SocketPool(config.ioSocket, this.travellerKeeper)
 
     this.pollAirportsAndBackfillTravellers()
   }
@@ -34,7 +39,6 @@ class InstagramAirportPollingListener {
     // Remember to GC old travellers
     setTimeout(()=>{this.pollAirportsAndBackfillTravellers()}, this.airportPollingFrequency)
   }
-
 
   pollAirPort(airport) {
     let options = {
