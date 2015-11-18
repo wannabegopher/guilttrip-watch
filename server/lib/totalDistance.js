@@ -1,25 +1,22 @@
 
 import validImage from './validImage'
 import haversine from 'haversine-distance'
-import haversineFormatInstagramCoords from './haversineFormatInstagramCoords'
+import haversineFormatInstagramCoords from '../../lib/haversineFormatInstagramCoords'
 import moment from 'moment'
 import debug from '../debug'
+import {dateFromImage} from '../../lib/timefunctions'
 
 function calculateDistanceInKm(image1, image2) {
   if (!image1.location || !image2.location ) { return 0 }
   return haversine(haversineFormatInstagramCoords(image1), haversineFormatInstagramCoords(image2)) / 1000
 }
 
-function dateFromImage(image) {
-  return new Date(image.created_time*1000)
-}
-
-
 export default function(images) {
 
   let image1, image2
-
   let totalTravelled = 0
+
+  let legs = []
 
   for (let i = 0; i < images.length - 1; i++) {
 

@@ -13,17 +13,13 @@ class SocketPool {
   }
 
   handleClientConnected(socket) {
-    socket.emit('initialTravellerSet', this.travellerKeeper.travellerList())
+    console.info("Connection!")
+    socket.emit('initialTravellers', this.travellerKeeper.interestingTravellerList().slice(0,10))
   }
 
   updateClients() {
-    this.ioSocket.emit('initialTravellerSet', this.travellerKeeper.travellerList())
+    this.ioSocket.emit('initialTravellers', this.travellerKeeper.travellerList())
   }
-
-  // function emitRandom() {
-  //   ioSocket.emit('ping', {ping: Math.random()})
-  //   setTimeout(emitRandom, 1000)
-  // }
 
 }
 

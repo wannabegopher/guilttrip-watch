@@ -26,6 +26,12 @@ export default class TravellerKeeper {
     return Object.keys(this.travellers).map(key => this.travellers[key])
   }
 
+  interestingTravellerList() {
+    return this.travellerList().filter(traveller => {
+      return traveller.isInteresting
+    })
+  }
+
   travellersWithoutImages() {
     return this.travellerList().filter(traveller => {
       return traveller.images.length == 0

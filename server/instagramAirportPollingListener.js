@@ -16,7 +16,7 @@ class InstagramAirportPollingListener {
     this.app = config.app
     this.ig = instagram()
 
-    this.airportPollingFrequency = 1000*60*2
+    this.airportPollingFrequency = 1000*60*5
 
     this.airports = geocodedAirports
 
@@ -27,7 +27,7 @@ class InstagramAirportPollingListener {
   }
 
   pollAirportsAndBackfillTravellers() {
-    let airportQueryPromises = this.airports.slice(0,1).map(airport => {
+    let airportQueryPromises = this.airports.slice(0,30).map(airport => {
       return this.pollAirPort(airport)
     })
 
@@ -42,7 +42,7 @@ class InstagramAirportPollingListener {
 
   pollAirPort(airport) {
     let options = {
-      distance: 5000
+      distance: 4000
     }
 
     if (airport.lastPolled) {

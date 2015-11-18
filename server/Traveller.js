@@ -3,6 +3,7 @@ import totalDistance from './lib/totalDistance'
 import instagram from './lib/instagram'
 import debug from './debug'
 import P from 'bluebird'
+import validImage from './lib/validImage'
 
 export default class Traveller {
 
@@ -17,8 +18,8 @@ export default class Traveller {
     this.firstSpottedAt = airport
     this.profilePicture = user.profile_picture,
     this.images = []
-
     this.ig = instagram()
+    this.totalLikes = 0
   }
 
   addMultipleImages(images) {
@@ -27,7 +28,8 @@ export default class Traveller {
   }
 
   addSingleImage(image) {
-    if (this.imageIsNew(instagram)) {
+    if (this.imageIsNew(image) && validImage(image)) {
+      this.totalLikes += image.likes.count
       this.images.push(image)
     }
   }
@@ -39,7 +41,7 @@ export default class Traveller {
   }
 
   sortImages() {
-    this.images = this.images.sort((a,b)=> {
+    this.images.sort((a,b)=> {
       return b.created_time - a.created_time
     })
   }
@@ -48,7 +50,11 @@ export default class Traveller {
     this.sortImages()
     debug(`\n- ${this.username} -`)
     this.totalTravelled = totalDistance(this.images)
+
+    this.isInteresting = this.totalTravelled > 5000 && this.totalLikes > 1400
+
     debug(`\n  grand total: ${this.totalTravelled}km \n`)
+    debug(`\n  total likes: ${this.totalLikes} \n`)
   }
 
   backFill() {

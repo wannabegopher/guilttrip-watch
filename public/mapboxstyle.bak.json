@@ -5,6 +5,10 @@
     "mapbox": {
       "url": "mapbox://mapbox.mapbox-streets-v6",
       "type": "vector"
+    },
+    "mapbox://mapbox.mapbox-terrain-v2": {
+      "url": "mapbox://mapbox.mapbox-terrain-v2",
+      "type": "vector"
     }
   },
   "sprite": "mapbox://sprites/mapbox/light-v8",
@@ -18,6 +22,399 @@
       },
       "paint": {
         "background-color": "#eee"
+      }
+    },
+    {
+      "id": "landcover_snow",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "landcover",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "snow"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#fff",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landcover_crop",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "landcover",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "crop"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#ececec",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landcover_grass",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "landcover",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "grass"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#e5e5e5",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landcover_scrub",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "landcover",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "scrub"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#e3e3e3",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landcover_wood",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "landcover",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "wood"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#dcdcdc",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landuse_industrial",
+      "type": "fill",
+      "source": "mapbox",
+      "source-layer": "landuse",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "industrial"
+        ],
+        [
+          "==",
+          "$type",
+          "Polygon"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#fff",
+        "fill-opacity": 0.5
+      }
+    },
+    {
+      "id": "landuse_park",
+      "type": "fill",
+      "source": "mapbox",
+      "source-layer": "landuse",
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "park"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#e4e4e4"
+      }
+    },
+    {
+      "id": "landuse_wood",
+      "type": "fill",
+      "source": "mapbox",
+      "source-layer": "landuse",
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "wood"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#e0e0e0"
+      }
+    },
+    {
+      "id": "hillshade_highlight_bright",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          94
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#fff",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              15,
+              0.15
+            ],
+            [
+              17,
+              0.05
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "hillshade_highlight_med",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          90
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#fff",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              15,
+              0.15
+            ],
+            [
+              17,
+              0.05
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "hillshade_shadow_faint",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          89
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#666",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              14,
+              0.06
+            ],
+            [
+              17,
+              0.01
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "hillshade_shadow_med",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          78
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#666",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              14,
+              0.06
+            ],
+            [
+              17,
+              0.01
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "hillshade_shadow_dark",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          67
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#888888",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              14,
+              0.06
+            ],
+            [
+              17,
+              0.01
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "hillshade_shadow_extreme",
+      "type": "fill",
+      "source": "mapbox://mapbox.mapbox-terrain-v2",
+      "source-layer": "hillshade",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "==",
+          "level",
+          56
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#999",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              14,
+              0.06
+            ],
+            [
+              17,
+              0.01
+            ]
+          ]
+        }
       }
     },
     {
