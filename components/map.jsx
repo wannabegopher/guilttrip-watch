@@ -6,11 +6,10 @@ export default React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if (this.locationIsNew(nextProps)) {
-      this.map.flyTo({
+      console.info(nextProps)
+      this.map.jumpTo({
         center: nextProps.location.slice(),
-        zoom: Math.floor(nextProps.zoom),
-        speed: 0.95,
-        curve: 1
+        zoom: Math.floor(nextProps.zoom)
         // easing: (t) => {
         //   return t
         //

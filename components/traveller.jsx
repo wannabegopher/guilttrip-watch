@@ -1,8 +1,12 @@
 import React from 'react'
 import Image from './image.jsx'
 import Introduction from './introduction.jsx'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import TimerMixin from 'react-timer-mixin'
 
 export default React.createClass({
+
+  mixins: [TimerMixin],
 
   getInitialState() {
     return {
@@ -30,9 +34,10 @@ export default React.createClass({
       slidesStarted: false
     })
     this.setImageIndex(null)
+    this.setTimeout(this.endIntroduction, 3000)
   },
 
-  handleStartSlidesShow() {
+  endIntroduction() {
     console.info("Start slides")
     this.setState({
       slidesStarted: true
@@ -40,11 +45,7 @@ export default React.createClass({
     this.setImageIndex(0)
   },
 
-  handleNextSlide() {
-    if (!this.state.slidesStarted) {
-      console.info("!!!!!!!!!! Image wants to advance slides without us being in a slideshow")
-      return
-    }
+  advanceSlideState() {
     console.info("Nextslide!")
     console.info("----")
     if (this.state.currentImageIndex < this.props.traveller.images.length - 1) {
@@ -66,10 +67,6 @@ export default React.createClass({
     return this.props.traveller.images[this.state.currentImageIndex]
   },
 
-  currentImages() {
-
-  },
-
   render() {
     const traveller = this.props.traveller
 
@@ -77,10 +74,12 @@ export default React.createClass({
 
     return (
       <div className="traveller">
-        {
-          !this.state.slidesStarted &&
-          <Introduction setNewMapLocation={this.props.setNewMapLocation} startSlideShow={this.handleStartSlidesShow} traveller={traveller} />
-        }
+          <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={100} transitionLeaveTimeout={3000}>
+            {
+              !this.state.slidesStarted &&
+              <Introduction setNewMapLocation={this.props.setNewMapLocation} traveller={traveller} />
+            }
+          </ReactCSSTransitionGroup>
         {
           this.state.slidesStarted &&
           <div>
@@ -89,8 +88,8 @@ export default React.createClass({
           </div>
         }
         {
-          this.state.currentImageIndex !== null &&
-          <Image setNewMapLocation={this.props.setNewMapLocation} nextSlide={this.handleNextSlide} image={this.currentImage()} />
+          false && this.state.currentImageIndex !== null &&
+          <Image advanceSlideState={this.advanceSlideState} image={this.currentImage()} />
         }
       </div>
     )

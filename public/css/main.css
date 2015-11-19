@@ -1,7 +1,11 @@
 
+html {
+}
+
 body {
   background-color: #001325;
   font-family: arial, helvetica;
+  font-style: 'oblique'
 }
 
 .traveller {
@@ -27,6 +31,8 @@ body {
   -webkit-filter: grayscale(1);
 }
 
+/* Introduction */
+
 .traveller-introduction {
   padding: 2rem;
   position: absolute;
@@ -34,24 +40,60 @@ body {
   left: 0px;
   bottom: 0px;
   right: 0px;
-  background-color: #000;
-  color: #fff;
+  background-color: #000614;
+  color: #ff0;
   font-size: 1rem;
-  opacity: 0.5;
-  transition: opacity 0.1s;
+  opacity: 0.9;
+  min-width: 90vw;
+  left: 00px;
+}
+
+.traveller-introduction.fade-appear {
+  opacity: 0.01;
+  left: 100vw;
+}
+
+.traveller-introduction.fade-appear.fade-appear-active {
+  opacity: 0.95;
+  left: 20px;
+  transition: left 0.1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+}
+
+.traveller-introduction.fade-leave {
+  opacity: 0.95;
+}
+
+.traveller-introduction.fade-leave.fade-leave-active {
+  opacity: 0.0;
+  transition: opacity 1s ease-out;
+}
+
+.traveller-introduction h1 {
+  text-transform: uppercase;
 }
 
 .traveller-introduction img {
   display: block;
-  width: 150px;
-  height: 150px;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-hieght: 100vh;
   margin: 1rem 0;
+  background-blend-mode: multiply;
+  webkit-background-blend-mode: multiply;
 }
 
 .traveller-introduction p {
+  text-transform: uppercase;
+  font-size: 2rem;
   display: block;
   margin: 1rem 0;
 }
+
+.traveller-introduction .distance {
+  font-size: 4rem;
+}
+
 .traveller-introduction h1 {
   font-size: 4rem;
   margin: 1rem 0;
@@ -61,6 +103,8 @@ body {
   font-size: 1rem;
   margin: 1rem 0;
 }
+
+/* Trip */
 
 
 .trip-image img {

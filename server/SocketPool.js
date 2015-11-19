@@ -14,7 +14,14 @@ class SocketPool {
 
   handleClientConnected(socket) {
     console.info("Connection!")
-    socket.emit('initialTravellers', this.travellerKeeper.interestingTravellerList().slice(0,10))
+
+    let travellers = this.travellerKeeper.interestingTravellerList()
+
+    travellers.sort((a,b) => {
+      return b.images[0].created_time - a.images[0].created_time
+    })
+
+    socket.emit('initialTravellers', travellers.slice(0,10))
   }
 
   updateClients() {

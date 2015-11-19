@@ -69,7 +69,7 @@ export default React.createClass({
 
     socket.on('initialTravellers', data => {
       console.info("Got a bunch of travellers:", data)
-      this.addTravellers(data)
+      this.addTravellers(data.slice(1,7))
     })
   },
 
